@@ -27,7 +27,26 @@ app.get("/text/sentiment", (req,res) => {
     return res.send("text sentiment for "+req.query.text);
 });
 
-let server = app.listen(8080, () => {
+let server = app.listen(8081, () => {
     console.log('Listening', server.address().port)
 })
+
+function getNLUInstance() {
+  let api_key = process.env.API_KEY;
+  let api_url = process.env.API_URL;
+  
+const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
+const { IamAuthenticator } = require('ibm-watson/auth');
+
+const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
+  version: '2021-03-25',
+  authenticator: new IamAuthenticator({
+    apikey: api_key,
+  }),
+  serviceUrl: api_url,
+});
+
+return naturalLanguageUnderstanding;
+}
+
 
